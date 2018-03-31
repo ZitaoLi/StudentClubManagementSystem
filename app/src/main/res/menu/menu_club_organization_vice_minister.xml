@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/vice_minister_outgoing"
+        android:title="卸任"/>
+    <item android:id="@+id/vice_minister_appointment_as_minister"
+        android:title="委任部长"/>
+    <item android:id="@+id/vice_minister_demote_to_staff"
+        android:title="降级为干事"/>
+</menu>

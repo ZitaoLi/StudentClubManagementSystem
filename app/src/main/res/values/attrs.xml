@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyTextInputLayout">
+        <attr name="hintValue" format="string"/>
+        <attr name="imageResourceValue" format="integer"/>
+        <attr name="linesNumValue" format="integer"/>
+        <attr name="focusable" format="boolean" />
+        <attr name="text" format="string" />
+
+        <attr name="fontsize_small" format="dimension"></attr>
+        <attr name="fontsize_medium" format="dimension"></attr>
+        <attr name="fontsize_large" format="dimension"></attr>
+
+        <attr name="item_height_1" format="dimension"></attr>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_bar_height"
+        android:background="@color/colorPrimary" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_register_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="35dp"
+            app:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+
+                <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:id="@+id/activity_request_what"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:hintValue="what"
+                    app:imageResourceValue="@drawable/ic_mood_black_24dp"
+                    app:linesNumValue="1" />
+
+                <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:id="@+id/activity_request_when"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:hintValue="when"
+                    app:imageResourceValue="@drawable/ic_mood_black_24dp"
+                    app:linesNumValue="1"
+                    app:focusable="false"/>
+
+                <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:id="@+id/activity_request_where"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintValue="where"
+                    app:imageResourceValue="@drawable/ic_mood_black_24dp"
+                    app:linesNumValue="1" />
+
+                <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintValue="detail"
+                    app:imageResourceValue="@drawable/ic_mood_black_24dp"
+                    app:linesNumValue="5" />
+
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/shape_button_square"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_photo_camera_black_24dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_check_black_24dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>
