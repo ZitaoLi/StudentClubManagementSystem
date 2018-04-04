@@ -97,7 +97,7 @@
                             android:id="@+id/launcher_page_admin_checkbox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="?attr/colorPrimary"
+                            android:background="#1E88E5"
                             materialdesign:check="false" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -116,14 +116,14 @@
                             android:id="@+id/launcher_page_sign_in_btn"
                             android:layout_width="match_parent"
                             android:layout_height="?attr/item_height_1"
-                            android:background="?attr/colorPrimary"
+                            android:background="#1E88E5"
                             android:text="登录账号" />
 
                         <com.gc.materialdesign.views.ButtonFlat
                             android:id="@+id/launcher_page_sign_up_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/colorPrimary"
+                            android:background="#1E88E5"
                             android:text="没有账号？点我注册" />
 
                     </LinearLayout>

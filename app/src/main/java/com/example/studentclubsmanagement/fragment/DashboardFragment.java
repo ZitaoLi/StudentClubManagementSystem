@@ -1,7 +1,9 @@
 package com.example.studentclubsmanagement.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -31,13 +33,32 @@ import com.example.studentclubsmanagement.activity.MemberDeletionActivity;
 import com.example.studentclubsmanagement.activity.MessagePushActivity;
 import com.example.studentclubsmanagement.activity.MessageWallActivity;
 import com.example.studentclubsmanagement.activity.StaffPowerActivity;
+import com.example.studentclubsmanagement.gson.ClubIdList;
+import com.example.studentclubsmanagement.gson.ClubMember;
+import com.example.studentclubsmanagement.gson.Power;
+import com.example.studentclubsmanagement.gson.PowerItem;
+import com.example.studentclubsmanagement.util.HttpUtil;
 import com.example.studentclubsmanagement.util.LogUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 李子韬 on 2018/3/12.
@@ -79,23 +100,94 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     private DashboardRecyclerViewAdapter adapter;
     private List<List<Integer>> data;
     private boolean isSpinnerFirst = true;
+    private String mUrlPrefix;
+    private int mUserId;
+    private int mCurrentClubId;
+    private Activity mActivity;
+    private View mView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
+        final View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        mView = view;
+        initCellIdTextMap();
 //        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dashboard_recycler_view);
 //        int numberOfColumns = 4;
 //        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), numberOfColumns));
 //        adapter = new DashboardRecyclerViewAdapter(view.getContext(), new String[]{ "1", "2", "3", "4", "5", "6", "7", "8", "48" });
 //        adapter.setClickListener(this);
 //        recyclerView.setAdapter(adapter);
-        initCellIdTextMap();
-        initSpinner(view);
-        initCell(view);
+        SharedPreferences sp = this.getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        mUserId = sp.getInt("user_id", 0);
+        mActivity = this.getActivity();
+        mUrlPrefix = HttpUtil.getUrlPrefix(mActivity);
+        String url = mUrlPrefix + "/controller/UserClubRelationServlet";
+        RequestBody body = new FormBody.Builder()
+                .add("user_id", String.valueOf(mUserId))
+                .build();
+        HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LogUtil.d(TAG, "post success");
+                String responseData = response.body().string();
+                LogUtil.d(TAG, responseData);
+                if (responseData != null) {
+                    // TODO 加载社团成员仪表盘
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        ClubIdList clubIdList = new Gson().fromJson(responseData, ClubIdList.class);
+                        LogUtil.d(TAG, "clubIdList: " + clubIdList);
+                        int[] clubIdArray = clubIdList.getClubIdArray();
+                        LogUtil.d(TAG, "clubIdArray: " + clubIdArray);
+                        List<String> data = new ArrayList<String>();
+                        for (int i = 0; i < clubIdArray.length; i++) {
+                            data.add(String.valueOf(clubIdArray[i]));
+                        }
+                        requestClubMemberInfo(data);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // TODO 显示普通用户仪表盘
+                }
+            }
+        });
+
+//        initSpinner(view);
+//        initCell(view);
         return view;
+    }
+
+    private void requestClubMemberInfo(List<String> clubIdList) {
+        String url = mUrlPrefix + "/controller/MultiClubMemberInfoServlet";
+        FormBody.Builder bodyBuilder = new FormBody.Builder();
+        for (int i = 0; i < clubIdList.size(); i++) {
+            bodyBuilder.add("club_id_list", clubIdList.get(i));
+        }
+        bodyBuilder.add("user_id", String.valueOf(mUserId));
+        RequestBody requestBody = bodyBuilder.build();
+        HttpUtil.sendOkHttpRequestWithPost(url, requestBody, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LogUtil.d(TAG, "post success");
+                String responseData = response.body().string();
+                LogUtil.d(TAG, responseData);
+                List<ClubMember> clubMembers = new Gson().fromJson(responseData, new TypeToken<List<ClubMember>>(){}.getType());
+                initSpinner(clubMembers);
+
+                LogUtil.d(TAG, "clubMembers: " + clubMembers);
+            }
+        });
     }
 
     @Override
@@ -103,40 +195,59 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
         Log.i("TAG", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
     }
 
-    private void initSpinner(View view) {
-        List<String> data = new ArrayList<String>();
-        data.add("1");data.add("2");data.add("3");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, data);
-        Spinner spinner = (Spinner) view.findViewById(R.id.dashboard_spinner);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void initSpinner(final List<ClubMember> clubMembers) {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (isSpinnerFirst) {
-//                    view.setVisibility(View.INVISIBLE);
-//                    isSpinnerFirst = false;
-//                }
-                Toast.makeText(view.getContext(), "i: " + i + " l: " + l, Toast.LENGTH_SHORT).show();
-            }
+            public void run() {
+                Gson gson = new Gson();
+                List<String> clubNames = new ArrayList<String>();
+                final List<Power> powers = new ArrayList<Power>();
+                for (int i = 0; i < clubMembers.size(); i++) {
+                    clubNames.add(clubMembers.get(i).getClubName());
+                    powers.add(gson.fromJson(clubMembers.get(i).getPower(), Power.class));
+                }
+                String[] clubNameStringArrary = (String[]) clubNames.toArray(new String[clubNames.size()]);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(mView.getContext(), android.R.layout.simple_list_item_1, clubNameStringArrary);
+                Spinner spinner = (Spinner) mView.findViewById(R.id.dashboard_spinner);
+                spinner.setAdapter(adapter);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        LogUtil.d(TAG, "click item: " + i);
+                        LogUtil.d(TAG, "powers.get(i): " + powers.get(i));
+                        mCurrentClubId = clubMembers.get(i).getClubId();
+                        initCell(powers.get(i));
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
 
+                    }
+                });
             }
         });
     }
 
     // 测试用方法
-    private void initCell(View view) {
-        data = new ArrayList<List<Integer>>();
-        data.add(Arrays.asList(1,2,3));
-        data.add(Arrays.asList(4, 5, 6, 7, 8));
-        data.add(Arrays.asList(9, 10, 11, 12));
+    private void initCell(Power power) {
+        Gson gson = new Gson();
+        List<PowerItem> powerItems = power.getPower();
+        LogUtil.d(TAG, "powerItems: " + powerItems);
 
-        for (int i = 0; i < 3; i++) {
-            LinearLayout linearLayout = (LinearLayout) view.findViewById(mLayer[i]);
+        data = new ArrayList<List<Integer>>();
+        for ( int i = 0; i < powerItems.size() - 1; i++) {
+            List<Integer> item = new ArrayList<Integer>();
+            for (int j = 0; j < powerItems.get(i).getItems().length; j++) {
+                item.add(powerItems.get(i).getItems()[j]);
+            }
+            data.add(item);
+        }
+//        data.add(Arrays.asList(1,2,3));
+//        data.add(Arrays.asList(4, 5, 6, 7, 8));
+//        data.add(Arrays.asList(9, 10, 11, 12));
+
+        for (int i = 0; i < powerItems.size() - 1; i++) {
+            LinearLayout linearLayout = (LinearLayout) mView.findViewById(mLayer[i]);
             insertCell(data.get(i), linearLayout);
         }
     }
