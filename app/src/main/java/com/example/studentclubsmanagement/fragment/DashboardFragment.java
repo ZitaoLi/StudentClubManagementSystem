@@ -106,6 +106,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     private void initSpinner(View view) {
         List<String> data = new ArrayList<String>();
         data.add("1");data.add("2");data.add("3");
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, data);
         Spinner spinner = (Spinner) view.findViewById(R.id.dashboard_spinner);
         spinner.setAdapter(adapter);

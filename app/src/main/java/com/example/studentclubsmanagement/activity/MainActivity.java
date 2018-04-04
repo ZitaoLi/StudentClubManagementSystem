@@ -39,18 +39,26 @@ public class MainActivity extends BaseActivity {
     private PagerAdapter mPagerAdapter;
     private NavigationController navigationController;
     private Toolbar toolbar;
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
-        int userId = sp.getInt("user_id", 0);
-        LogUtil.d(TAG, "user_id: " + userId);
-
         initToolbar();
-        initScreenSlide();
+
+        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+        isAdmin = sp.getBoolean("is_admin", false);
+        if (!isAdmin) {
+            int userId = sp.getInt("user_id", 0);
+            LogUtil.d(TAG, "user_id: " + userId);
+            initUserScreenSlide();
+        } else {
+            int adminId = sp.getInt("admin_id", 0);
+            LogUtil.d(TAG, "user_id: " + adminId);
+            initAdimnScreenSlide();
+        }
     }
 
     @Override
@@ -89,14 +97,29 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-//        WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-//        localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void initScreenSlide() {
+    private void initUserScreenSlide() {
+        fragmentList = new ArrayList<Fragment>();
+        fragmentList.add(new SquareFragment());
+        fragmentList.add(new DashboardFragment());
+        fragmentList.add(new MineFragment());
+
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mPagerAdapter);
+        tab = (PageNavigationView) findViewById(R.id.tab);
+        navigationController = tab.material()
+                .addItem(android.R.drawable.ic_menu_camera, "广场")
+                .addItem(android.R.drawable.ic_dialog_dialer, "仪表盘")
+                .addItem(android.R.drawable.ic_menu_search, "我的")
+                .build();
+        navigationController.setupWithViewPager(viewPager);
+    }
+
+    private void initAdimnScreenSlide() {
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(new SquareFragment());
         fragmentList.add(new DashboardFragment());

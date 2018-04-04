@@ -1,5 +1,6 @@
 package com.example.studentclubsmanagement.activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -29,14 +30,14 @@ public class RegistertActivity extends BaseActivity {
     private static final String TAG = "RegistertActivity";
     private ViewHolder mHolder;
     private String mUrlPrefix;
-    private Context mContext;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        mContext = this;
+        mActivity = this;
         mHolder = new ViewHolder();
     }
 
@@ -61,15 +62,14 @@ public class RegistertActivity extends BaseActivity {
             initToolbar(toolbar);
             handUpBtn.setOnClickListener(new OnClickListenerImpl());
         }
+    }
 
-        private void initToolbar(Toolbar toolbar) {
-            this.toolbar = (Toolbar) findViewById(R.id.activity_register_toolbar);
-            setSupportActionBar(this.toolbar);
-            ActionBar actionBar = getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setTitle("注册账号");
-            }
+    private void initToolbar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("注册账号");
         }
     }
 
@@ -78,7 +78,7 @@ public class RegistertActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.register_hand_up_btn:
-                    mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
+                    mUrlPrefix = HttpUtil.getUrlPrefix(mActivity);
                     String url = mUrlPrefix + "/controller/UserSignUpServlet";
                     String studentCode = mHolder.studentCode.getEditText().getText().toString();
                     String name = mHolder.name.getEditText().getText().toString();
@@ -108,10 +108,10 @@ public class RegistertActivity extends BaseActivity {
                             int userId = Integer.parseInt(response.body().string());
                             // TODO 注册失败逻辑
                             if (userId == 0) {
-                                showToastOnUI("注册失败");
+                                HttpUtil.showToastOnUI(mActivity, "注册失败");
                                 return;
                             } else if (userId == -1) {
-                                showToastOnUI("账号已经存在");
+                                HttpUtil.showToastOnUI(mActivity, "账号已经存在");
                                 return;
                             }
                             // TODO 持久化user_id
@@ -119,7 +119,7 @@ public class RegistertActivity extends BaseActivity {
                             editor.putInt("user_id", userId);
                             editor.apply();
                             // TODO 启动主页
-                            Intent intent = new Intent(mContext, MainActivity.class);
+                            Intent intent = new Intent(mActivity, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -132,7 +132,7 @@ public class RegistertActivity extends BaseActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mContext, text, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, text, Toast.LENGTH_LONG).show();
                 }
             });
         }

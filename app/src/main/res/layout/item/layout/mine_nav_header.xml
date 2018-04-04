@@ -7,27 +7,40 @@
     android:background="?attr/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_header"
+        android:id="@+id/mine_fragment_user_header"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/test_user_header"
+        android:src="@drawable/default_user"
         android:layout_centerInParent="true"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_header"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:textColor="#ffffff"
-        android:textSize="16sp"
-        android:text="用户：lztao"/>
+        android:layout_below="@+id/mine_fragment_user_header"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:text="用户："/>
+        <TextView
+            android:id="@+id/mine_fragment_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:text="lztao"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/user_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_header"
+        android:layout_below="@id/mine_fragment_user_header"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"

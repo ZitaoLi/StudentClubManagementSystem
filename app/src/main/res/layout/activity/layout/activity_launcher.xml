@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:background="@drawable/test_img"
+            android:background="@drawable/test_launcher"
             android:fitsSystemWindows="true"/>
 
         <android.support.design.widget.AppBarLayout
@@ -90,21 +91,39 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp">
+                        android:gravity="right">
+
+                        <com.gc.materialdesign.views.CheckBox
+                            android:id="@+id/launcher_page_admin_checkbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorPrimary"
+                            materialdesign:check="false" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="管理员"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <com.gc.materialdesign.views.ButtonRectangle
                             android:id="@+id/launcher_page_sign_in_btn"
                             android:layout_width="match_parent"
                             android:layout_height="?attr/item_height_1"
-                            android:background="#1E88E5"
+                            android:background="?attr/colorPrimary"
                             android:text="登录账号" />
 
                         <com.gc.materialdesign.views.ButtonFlat
                             android:id="@+id/launcher_page_sign_up_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#1E88E5"
+                            android:background="?attr/colorPrimary"
                             android:text="没有账号？点我注册" />
 
                     </LinearLayout>

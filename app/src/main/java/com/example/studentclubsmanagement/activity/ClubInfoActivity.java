@@ -39,11 +39,11 @@ public class ClubInfoActivity extends BaseActivity {
 
     public static final String TAG = "ClubInfoActivity";
     private int mClubId;
-    private Context mContext;
+    private Activity mActivity;
     private String mUrlPrefix;
 
     public ClubInfoActivity() {
-        mContext = this;
+        mActivity = this;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ClubInfoActivity extends BaseActivity {
     }
 
     private void loadPage() {
-        mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
+        mUrlPrefix = HttpUtil.getUrlPrefix(mActivity);
         String url = mUrlPrefix + "/controller/ClubInfoServlet";
         RequestBody body = new FormBody.Builder().add("club_id", String.valueOf(mClubId)).build();
         HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
@@ -79,8 +79,8 @@ public class ClubInfoActivity extends BaseActivity {
                 try {
                     showResponseData(json);
                 } catch (Exception e) {
+                    HttpUtil.showToastOnUI(mActivity, "加载页面失败");
                     e.printStackTrace();
-                    Toast.makeText(MyApplication.getContext(), "加载页面失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,7 +111,10 @@ public class ClubInfoActivity extends BaseActivity {
                 String imagePath = club.getClubBgImagePath();
                 if (!"".equals(imagePath)){
                     LogUtil.d(TAG, "load:" + mUrlPrefix + imagePath);
-                    Glide.with(mContext).load(mUrlPrefix + imagePath).into(clubInfoBgImage);
+                    Glide.with(mActivity).load(mUrlPrefix + imagePath).into(clubInfoBgImage);
+                } else {
+                    // TODO 设置默认社团背景
+//                    clubInfoBgImage.setImageResource(R.drawable.default_user);
                 }
                 clubName.setText(club.getClubName());
                 clubInfo.setText(club.getClubInfo());

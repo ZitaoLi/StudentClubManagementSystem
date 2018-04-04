@@ -3,6 +3,7 @@ package com.example.studentclubsmanagement.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.widget.Toast;
 
 import com.example.studentclubsmanagement.R;
 
@@ -26,7 +27,7 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
 
-    public  static void sendOkHttpRequestWithPost(String address, String json, okhttp3.Callback callback) {
+    public static void sendOkHttpRequestWithPost(String address, String json, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, json);
         LogUtil.d("HttpUtil", "json: " + json);
@@ -34,7 +35,7 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
 
-    public  static void sendOkHttpRequestWithPost(String address, RequestBody body, okhttp3.Callback callback) {
+    public static void sendOkHttpRequestWithPost(String address, RequestBody body, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(address).post(body).build();
         client.newCall(request).enqueue(callback);
@@ -46,6 +47,15 @@ public class HttpUtil {
         String rootPath = res.getString(R.string.root_path);
 
         return server + rootPath;
+    }
+
+    public static void showToastOnUI(final Activity activity, final String text) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
 

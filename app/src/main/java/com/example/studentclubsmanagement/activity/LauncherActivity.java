@@ -22,6 +22,7 @@ import com.example.studentclubsmanagement.util.LogUtil;
 import com.example.studentclubsmanagement.util.MyApplication;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.CheckBox;
 
 import java.io.IOException;
 
@@ -43,9 +44,11 @@ public class LauncherActivity extends BaseActivity {
     private ViewHolder mHolder;
     private String mUrlPrefix;
     private Context mContext;
+    private boolean isAdmin;
 
     public LauncherActivity() {
         mContext = this;
+        isAdmin = false;
     }
 
     @Override
@@ -54,7 +57,6 @@ public class LauncherActivity extends BaseActivity {
         setContentView(R.layout.activity_launcher);
 
         mHolder = new ViewHolder();
-
 //        mViewPager= (ViewPager) findViewById(R.id.launcher_page_view_pager);
 //        launcherPageFragmentPagerAdapter = new LauncherPageFragmentPagerAdapter(getSupportFragmentManager());
 //        mViewPager.setAdapter(launcherPageFragmentPagerAdapter);
@@ -77,6 +79,7 @@ public class LauncherActivity extends BaseActivity {
         MyTextInputLayout textInputLayout2 = (MyTextInputLayout) findViewById(R.id.launcher_page_password);
         ButtonRectangle signInButton = (ButtonRectangle) findViewById(R.id.launcher_page_sign_in_btn);
         ButtonFlat signUpButton = (ButtonFlat) findViewById(R.id.launcher_page_sign_up_btn);
+        CheckBox adminCheckBox = (CheckBox) findViewById(R.id.launcher_page_admin_checkbox);
 
         private ViewHolder() {
             textInputLayout1.getEditText().setText("1407300306");
@@ -86,12 +89,79 @@ public class LauncherActivity extends BaseActivity {
             signInButton.setOnClickListener(new OnClickListenerImpl());
             signUpButton.setOnClickListener(new OnClickListenerImpl());
             signUpButton.setOnClickListener(new OnClickListenerImpl());
+            adminCheckBox.setOncheckListener(new OnCheckListenerImpl());
         }
 //        private void bindOnClickListener() {
 //            cardView.setOnClickListener(new OnClickListenerImpl());
 //            signInButton.setOnClickListener(new OnClickListenerImpl());
 //            signUpButton.setOnClickListener(new OnClickListenerImpl());
 //        }
+    }
+
+    private void userSignIn() {
+        mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
+        String url = mUrlPrefix + "/controller/UserSignInServlet";;
+        String studentCode = mHolder.textInputLayout1.getEditText().getText().toString();
+        String password = mHolder.textInputLayout2.getEditText().getText().toString();
+        RequestBody body = new FormBody.Builder()
+                .add("student_code", studentCode)
+                .add("password", password)
+                .build();
+        HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                int userId = Integer.parseInt(response.body().string());
+                if (userId == 0) LogUtil.d(TAG, "password no match");
+                if (userId == -1) LogUtil.d(TAG, "account no exist");
+                LogUtil.d(TAG, "post success");
+                // TODO 持久化user_id
+                SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putInt("user_id", userId);
+                editor.putBoolean("is_admin", isAdmin);
+                editor.apply();
+                // TODO 启动主页
+                Intent intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    private void adminSignIn() {
+        mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
+        String url = mUrlPrefix + "/controller/AdminSignInServlet";;
+        String adminName = mHolder.textInputLayout1.getEditText().getText().toString();
+        String password = mHolder.textInputLayout2.getEditText().getText().toString();
+        RequestBody body = new FormBody.Builder()
+                .add("name", adminName)
+                .add("password", password)
+                .build();
+        HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                int userId = Integer.parseInt(response.body().string());
+                if (userId == 0) LogUtil.d(TAG, "password no match");
+                if (userId == -1) LogUtil.d(TAG, "administrator no exist");
+                LogUtil.d(TAG, "post success");
+                // TODO 持久化user_id
+                SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                editor.putInt("admin_id", userId);
+                editor.putBoolean("is_admin", isAdmin);
+                editor.apply();
+                // TODO 启动主页
+                Intent intent = new Intent(mContext, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     class OnClickListenerImpl implements View.OnClickListener {
@@ -103,41 +173,28 @@ public class LauncherActivity extends BaseActivity {
                     mHolder.appBarLayout.setExpanded(false);
                     break;
                 case R.id.launcher_page_sign_in_btn:
-                    mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
-                    String url = mUrlPrefix + "/controller/UserSignInServlet";
-                    String studentCode = mHolder.textInputLayout1.getEditText().getText().toString();
-                    String password = mHolder.textInputLayout2.getEditText().getText().toString();
-                    RequestBody body = new FormBody.Builder()
-                            .add("student_code", studentCode)
-                            .add("password", password)
-                            .build();
-                    HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            e.printStackTrace();
-                        }
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            int userId = Integer.parseInt(response.body().string());
-                            if (userId == 0) LogUtil.d(TAG, "password no match");
-                            if (userId == -1) LogUtil.d(TAG, "account no exist");
-                            LogUtil.d(TAG, "post success");
-                            // TODO 持久化user_id
-                            SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
-                            editor.putInt("user_id", userId);
-                            editor.apply();
-                            // TODO 启动主页
-                            Intent intent = new Intent(mContext, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
+                    if (!isAdmin) {
+                        userSignIn();
+                    } else {
+                        adminSignIn();
+                    }
                     break;
                 case R.id.launcher_page_sign_up_btn:
                     Intent intent = new Intent(mContext, RegistertActivity.class);
                     startActivity(intent);
                     finish();
                     break;
+            }
+        }
+    }
+
+    class OnCheckListenerImpl implements CheckBox.OnCheckListener {
+        @Override
+        public void onCheck(CheckBox checkBox, boolean isChecked) {
+            if (isChecked) {
+                isAdmin = true;
+            } else {
+                isAdmin = false;
             }
         }
     }
