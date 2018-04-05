@@ -19,6 +19,7 @@ import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.activity.Newactivity;
 import com.example.studentclubsmanagement.gson.News;
 import com.example.studentclubsmanagement.util.HttpUtil;
+import com.example.studentclubsmanagement.util.LogUtil;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecyclerViewAdapter.ViewHolder> {
 
+    private static final String TAG = "SquareRecyclerViewAdapter";
     private List<News> mSquareContentList;
     private Context mContext;
     private String mUrlPrefix;
@@ -36,6 +38,7 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
     public SquareRecyclerViewAdapter(Context context, List<News> squareContentList) {
         mContext = context;
         mSquareContentList = squareContentList;
+        LogUtil.d(TAG,"mSquareContentList: " + mSquareContentList);
     }
 
     @Override
@@ -86,6 +89,7 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
         holder.clubName.setText(news.getClubName());
         holder.titleText.setText(news.getTitle());
         holder.contentText.setText(news.getContent());
+        holder.clickZone.setTag(position);
     }
 
     @Override
@@ -140,7 +144,9 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
                 case R.id.share:
                     break;
                 case R.id.click_zone:
-                    int position = mHolder.getAdapterPosition();
+                    int position = mHolder.getLayoutPosition();
+                    position = (int) view.getTag();
+                    LogUtil.d(TAG, "position: " + position);
                     Intent intent = new Intent(mContext, Newactivity.class);
                     intent.putExtra("news_id", mSquareContentList.get(position).getId());
                     mContext.startActivity(intent);

@@ -3,6 +3,7 @@
     package="com.example.studentclubsmanagement">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".util.MyApplication"
@@ -37,7 +38,18 @@
         <activity android:name=".activity.TestDataAPIActivity" />
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.LauncherActivity" />
-        <activity android:name=".activity.RegistertActivity"></activity>
+        <activity android:name=".activity.RegistertActivity" />
+        <activity android:name=".activity.TestUploadImgActivity"></activity>
+        
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.studentclubsmanagement.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 
 </manifest>

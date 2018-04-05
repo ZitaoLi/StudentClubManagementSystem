@@ -92,6 +92,10 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this, LauncherActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.test_upload_img:
+                intent = new Intent(this, TestUploadImgActivity.class);
+                startActivity(intent);
+                break;
         }
         return true;
     }

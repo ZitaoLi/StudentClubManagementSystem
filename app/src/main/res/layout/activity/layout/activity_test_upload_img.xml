@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.studentclubsmanagement.activity.TestUploadImgActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical">=
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/test_upload_img_btn"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/item_height_1"
+            android:background="#1E88E5"
+            android:text="上传照片" />
+        <ImageView
+            android:id="@+id/test_upload_img_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/test_launcher"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
