@@ -113,12 +113,17 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
         final View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         mView = view;
         initCellIdTextMap();
+        loadPage();
 //        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dashboard_recycler_view);
 //        int numberOfColumns = 4;
 //        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), numberOfColumns));
 //        adapter = new DashboardRecyclerViewAdapter(view.getContext(), new String[]{ "1", "2", "3", "4", "5", "6", "7", "8", "48" });
 //        adapter.setClickListener(this);
 //        recyclerView.setAdapter(adapter);
+        return view;
+    }
+
+    private void loadPage() {
         SharedPreferences sp = this.getActivity().getSharedPreferences("data", MODE_PRIVATE);
         mUserId = sp.getInt("user_id", 0);
         mActivity = this.getActivity();
@@ -138,7 +143,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 String responseData = response.body().string();
                 LogUtil.d(TAG, responseData);
                 if (responseData != null) {
-                    // TODO 加载社团成员仪表盘
+                    // TODO 加载有社团用户的仪表盘
                     try {
                         JSONObject jsonObject = new JSONObject(responseData);
                         ClubIdList clubIdList = new Gson().fromJson(responseData, ClubIdList.class);
@@ -154,14 +159,30 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                         e.printStackTrace();
                     }
                 } else {
-                    // TODO 显示普通用户仪表盘
+                    // TODO 显示无社团用户的仪表盘
+                    LinearLayout linearLayout = (LinearLayout) mView.findViewById(R.id.layer_1);
+                    LinearLayout subLinearLayout = new LinearLayout(linearLayout.getContext());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    subLinearLayout.setLayoutParams(params);
+                    subLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                    LayoutInflater inflater = LayoutInflater.from(linearLayout.getContext());
+                    WindowManager windowManager = (WindowManager) linearLayout.getContext().getSystemService(Context.WINDOW_SERVICE);
+                    int width = windowManager.getDefaultDisplay().getWidth() / 4;
+                    for (int i = 0; i < 3; i++) {
+                        View v = inflater.inflate(R.layout.dashboard_cell_item, linearLayout, false);
+                        v.setLayoutParams(new RelativeLayout.LayoutParams(width , width));
+                        TextView cellText =((TextView) v.findViewById(R.id.cell_text));
+                        ImageView cellImage= (ImageView) v.findViewById(R.id.cell_image);
+                        v.setId(cell_id[i]);
+                        cellText.setText((String) mCellIdTextMap.get(cell_id[i]).get(0));
+                        cellImage.setImageResource((Integer) mCellIdTextMap.get(cell_id[i]).get(1));
+                        v.setOnClickListener(DashboardFragment.this);
+                        subLinearLayout.addView(v);
+                    }
+                    linearLayout.addView(subLinearLayout);
                 }
             }
         });
-
-//        initSpinner(view);
-//        initCell(view);
-        return view;
     }
 
     private void requestClubMemberInfo(List<String> clubIdList) {

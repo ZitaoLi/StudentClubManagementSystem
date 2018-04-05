@@ -14,8 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.activity.Newactivity;
+import com.example.studentclubsmanagement.gson.News;
+import com.example.studentclubsmanagement.util.HttpUtil;
+
+import java.util.List;
 
 /**
  * Created by 李子韬 on 2018/3/13.
@@ -23,17 +28,23 @@ import com.example.studentclubsmanagement.activity.Newactivity;
 
 public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecyclerViewAdapter.ViewHolder> {
 
-    private String[] mData;
+    private List<News> mSquareContentList;
+    private Context mContext;
+    private String mUrlPrefix;
+    private ViewHolder mHolder;
 
-    public SquareRecyclerViewAdapter(Context context, String[] data) {
-
+    public SquareRecyclerViewAdapter(Context context, List<News> squareContentList) {
+        mContext = context;
+        mSquareContentList = squareContentList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.square_content_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+        mHolder = holder;
 
+        mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
 //        holder.moreImageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -57,33 +68,38 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
 //                popupMenu.show();
 //            }
 //        });
-
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.userHeadImage.setImageResource(R.mipmap.ic_launcher_round);
-        holder.additionalImage.setImageResource(R.drawable.ic_launcher_background);
-        holder.userName.setText("null");
-        holder.clubName.setText("null");
-        holder.titleText.setText("null");
-        holder.contentText.setText("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull");
+        News news = mSquareContentList.get(position);
+        String userHeaderImagePath = news.getUserHeaderImagePath();
+        if (!"".equals(userHeaderImagePath)) {
+            Glide.with(mContext).load(mUrlPrefix + userHeaderImagePath).into(holder.userHeadImage);
+        }
+        String additionImagePath = news.getImagePath();
+        if (!"".equals(additionImagePath)) {
+            Glide.with(mContext).load(mUrlPrefix + additionImagePath).override(1000, 500).centerCrop().into(holder.additionalImage);
+        }
+        holder.userName.setText(news.getUserName());
+        holder.clubName.setText(news.getClubName());
+        holder.titleText.setText(news.getTitle());
+        holder.contentText.setText(news.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return mSquareContentList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder{
         ImageView userHeadImage;
         ImageView additionalImage;
         TextView userName;
         TextView clubName;
         TextView titleText;
         TextView contentText;
-//        ImageButton moreButton;
         ImageView moreImageView;
         Button startButton;
         Button commentButton;
@@ -105,13 +121,16 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
             shareButton = (Button) itemView.findViewById(R.id.share);
             clickZone = (LinearLayout) itemView.findViewById(R.id.click_zone);
 
-            startButton.setOnClickListener(this);
-            commentButton.setOnClickListener(this);
-            shareButton.setOnClickListener(this);
-            clickZone.setOnClickListener(this);
-            moreImageView.setOnClickListener(this);
+            startButton.setOnClickListener(new OnClickListenerImpl());
+            commentButton.setOnClickListener(new OnClickListenerImpl());
+            shareButton.setOnClickListener(new OnClickListenerImpl());
+            clickZone.setOnClickListener(new OnClickListenerImpl());
+            moreImageView.setOnClickListener(new OnClickListenerImpl());
         }
+    }
 
+    class OnClickListenerImpl implements View.OnClickListener {
+        @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.start:
@@ -121,11 +140,10 @@ public class SquareRecyclerViewAdapter extends RecyclerView.Adapter<SquareRecycl
                 case R.id.share:
                     break;
                 case R.id.click_zone:
-                    int position = this.getAdapterPosition();
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, Newactivity.class);
-                    intent.putExtra("position", position);
-                    context.startActivity(intent);
+                    int position = mHolder.getAdapterPosition();
+                    Intent intent = new Intent(mContext, Newactivity.class);
+                    intent.putExtra("news_id", mSquareContentList.get(position).getId());
+                    mContext.startActivity(intent);
                     break;
                 case R.id.more:
                     PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
