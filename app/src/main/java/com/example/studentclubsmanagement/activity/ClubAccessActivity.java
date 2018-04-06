@@ -1,6 +1,7 @@
 package com.example.studentclubsmanagement.activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +49,7 @@ public class ClubAccessActivity extends BaseActivity {
     private String mUrlPrefix;
     private String mBase64Image;
     private int mTransactionId;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class ClubAccessActivity extends BaseActivity {
 
         mUrlPrefix = HttpUtil.getUrlPrefix(this);
         mBase64Image = "";
+        mActivity = this;
         initToolbar();
 
         ButtonRectangle uploadImgBtn = (ButtonRectangle) findViewById(R.id.club_access_upload_img_btn);
@@ -81,7 +84,7 @@ public class ClubAccessActivity extends BaseActivity {
         ((MyTextInputLayout) findViewById(R.id.club_access_title)).getEditText().setText("我希望加入雨无声");
         ((MyTextInputLayout) findViewById(R.id.club_access_content)).getEditText().setText("我会编程技术，我想加入雨无声校园网。");
 
-        String clubName = String.valueOf(((MyTextInputLayout) findViewById(R.id.club_access_club_name)).getEditText().getText());
+        final String clubName = String.valueOf(((MyTextInputLayout) findViewById(R.id.club_access_club_name)).getEditText().getText());
         String title = String.valueOf(((MyTextInputLayout) findViewById(R.id.club_access_title)).getEditText().getText());
         String content = String.valueOf(((MyTextInputLayout) findViewById(R.id.club_access_content)).getEditText().getText());
 
@@ -104,7 +107,22 @@ public class ClubAccessActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 LogUtil.d(TAG, "post success");
-//                int clubInternalTransactionId = Integer.parseInt(response.body().string());
+                String code = response.body().string();
+                int res = -1;
+                if (!"".equals(code)) {
+                    res = Integer.parseInt(code);
+                }
+                if (res == 1) {
+                    // 成功
+                    HttpUtil.showToastOnUI(mActivity, "添加成功");
+                } else if (res == 0) {
+                    // 社团不存在
+                    HttpUtil.showToastOnUI(mActivity, "该社团不存在");
+                } else if (res == -1) {
+                    // 申请失败
+                    HttpUtil.showToastOnUI(mActivity, "申请失败，请重试");
+                }
+                finish();
 //                mTransactionId = clubInternalTransactionId;
                 // TODO 上传图片
 //                uploadImage(mBase64Image, clubInternalTransactionId);
