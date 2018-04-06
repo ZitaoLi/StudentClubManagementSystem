@@ -68,32 +68,32 @@
 
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/ic_photo_camera_black_24dp"/>
-                    <com.gc.materialdesign.views.ButtonRectangle
-                        android:id="@+id/club_access_upload_img_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/item_height_1"
-                        android:background="#1E88E5"
-                        android:text="上传照片" />
-                </LinearLayout>
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="60dp"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:gravity="center_vertical">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:src="@drawable/ic_photo_camera_black_24dp"/>-->
+                    <!--<com.gc.materialdesign.views.ButtonRectangle-->
+                        <!--android:id="@+id/club_access_upload_img_btn"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="?attr/item_height_1"-->
+                        <!--android:background="#1E88E5"-->
+                        <!--android:text="上传照片" />-->
+                <!--</LinearLayout>-->
 
-                <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="right"
-                    android:src="@drawable/ic_photo_camera_black_24dp"
-                    android:background="@drawable/shape_button_square"
-                    android:scaleType="fitXY"/>
+                <!--<ImageButton-->
+                    <!--android:layout_width="60dp"-->
+                    <!--android:layout_height="60dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:src="@drawable/ic_photo_camera_black_24dp"-->
+                    <!--android:background="@drawable/shape_button_square"-->
+                    <!--android:scaleType="fitXY"/>-->
 
             </LinearLayout>
 

@@ -54,4 +54,5 @@ dependencies {
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
     compile 'com.github.vajro:MaterialDesignLibrary:1.6'
     compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.zyao89:zloading:1.0.11'
 }

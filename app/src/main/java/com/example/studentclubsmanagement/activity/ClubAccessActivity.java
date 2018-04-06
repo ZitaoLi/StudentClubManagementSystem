@@ -61,15 +61,6 @@ public class ClubAccessActivity extends BaseActivity {
         mActivity = this;
         initToolbar();
 
-        ButtonRectangle uploadImgBtn = (ButtonRectangle) findViewById(R.id.club_access_upload_img_btn);
-        uploadImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ImgSelectorPopupWindow popupWindow = new ImgSelectorPopupWindow(ClubAccessActivity.this, getWindow().getDecorView());
-                mPopupWindow = popupWindow;
-                mUri = popupWindow.getImageUri();
-            }
-        });
         FloatingActionButton commitBtn = (FloatingActionButton) findViewById(R.id.club_access_commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,84 +141,6 @@ public class ClubAccessActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    LogUtil.d(TAG, "take photo success");
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mUri));
-                        mBase64Image = ImageHandleUtil.bitmapToBase64(bitmap);
-//                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-//                        byte[] bytes = byteArrayOutputStream.toByteArray();
-//                        Glide.with(this).load(bytes).into(mPicture);
-//                        mPicture.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case 2:
-                if (resultCode == RESULT_OK) {
-                    String imagePath = null;
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        // TODO
-                        imagePath = ImageHandleUtil.handleImageOnKatKit(data, this);
-                    } else {
-                        // TODO
-                        imagePath = ImageHandleUtil.handleImageBeforeKatKit(data, this);
-                    }
-                    LogUtil.d(TAG, "imagePath: " + imagePath);
-                    Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                    LogUtil.d(TAG, "bitmap: " + bitmap);
-                    String base64 = ImageHandleUtil.bitmapToBase64(bitmap);
-                    LogUtil.d(TAG, "base64: " + base64);
-                    mBase64Image = base64;
-//                    uploadImage(base64);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void uploadImage(String base64, int transactionId) {
-        String url = mUrlPrefix + "/controller/ImageUploaderServlet";;
-        RequestBody body = new FormBody.Builder()
-                .add("base64_img", base64)
-                .add("type", "club_access")
-                .add("club_internal_transaction_id", String.valueOf(mTransactionId))
-                .build();
-        HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-            }
-        });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // TODO
-                    mPopupWindow.openAlbum();
-                } else {
-                    Toast.makeText(this, "permission denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                break;
-        }
     }
 }
 
