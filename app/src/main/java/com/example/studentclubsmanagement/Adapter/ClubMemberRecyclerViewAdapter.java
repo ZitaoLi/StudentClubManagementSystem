@@ -9,8 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.fragment.StaffPowerDialogFragment;
+import com.example.studentclubsmanagement.gson.Club;
+import com.example.studentclubsmanagement.gson.ClubMember;
+import com.example.studentclubsmanagement.util.HttpUtil;
+
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by 李子韬 on 2018/3/23.
@@ -20,10 +28,13 @@ public class ClubMemberRecyclerViewAdapter extends RecyclerView.Adapter<ClubMemb
 
     private Context mContext;
     private boolean mHaveCheckBox;
+    private List<ClubMember> mClubMemberList;
+    private String mUrlPrefix;
 
-    public ClubMemberRecyclerViewAdapter(Context context, boolean haveCheckBox) {
+    public ClubMemberRecyclerViewAdapter(Context context, boolean haveCheckBox, List<ClubMember> clubMemberList) {
         mContext = context;
         mHaveCheckBox = haveCheckBox;
+        mClubMemberList = clubMemberList;
     }
 
     @Override
@@ -35,7 +46,14 @@ public class ClubMemberRecyclerViewAdapter extends RecyclerView.Adapter<ClubMemb
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.clubMemberHeaderImage.setImageResource(R.drawable.test_user_header);
+        mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
+        ClubMember clubMember = mClubMemberList.get(position);
+        holder.clubMemberName.setText(clubMember.getUserName());
+        holder.clubMemberName.setTag(position);
+        String userHeaderImagePath = clubMember.getUserHeaderImage();
+        if (!"".equals(userHeaderImagePath)) {
+            Glide.with(mContext).load(mUrlPrefix + userHeaderImagePath).into(holder.clubMemberHeaderImage);
+        }
         holder.checkBox.setChecked(true);
         if (!mHaveCheckBox) {
             holder.clubMemberName.setOnClickListener(new OnClickListenerImp());
@@ -44,7 +62,7 @@ public class ClubMemberRecyclerViewAdapter extends RecyclerView.Adapter<ClubMemb
 
     @Override
     public int getItemCount() {
-        return 5;
+        return mClubMemberList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,10 +86,13 @@ public class ClubMemberRecyclerViewAdapter extends RecyclerView.Adapter<ClubMemb
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.club_member_list_text_view:
+                    int position = (int) view.getTag();
                     StaffPowerDialogFragment dialogFragment =  new StaffPowerDialogFragment();
+                    dialogFragment.setPower(mClubMemberList.get(position).getPower());
                     FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                     dialogFragment.setCancelable(false);
                     dialogFragment.show(manager, "staff_power");
+//                    dialogFragment.getDialog().getWindow().setLayout(500, 500);
                     break;
                 default:
                     break;

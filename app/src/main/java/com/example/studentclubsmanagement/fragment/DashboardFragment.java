@@ -35,6 +35,7 @@ import com.example.studentclubsmanagement.activity.MessageWallActivity;
 import com.example.studentclubsmanagement.activity.StaffPowerActivity;
 import com.example.studentclubsmanagement.gson.ClubIdList;
 import com.example.studentclubsmanagement.gson.ClubMember;
+import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.example.studentclubsmanagement.gson.Power;
 import com.example.studentclubsmanagement.gson.PowerItem;
 import com.example.studentclubsmanagement.util.HttpUtil;
@@ -124,8 +125,10 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     }
 
     private void loadPage() {
+        LogUtil.d(TAG, "load page");
         SharedPreferences sp = this.getActivity().getSharedPreferences("data", MODE_PRIVATE);
         mUserId = sp.getInt("user_id", 0);
+        LogUtil.d(TAG, "user_id: " + mUserId);
         mActivity = this.getActivity();
         mUrlPrefix = HttpUtil.getUrlPrefix(mActivity);
         String url = mUrlPrefix + "/controller/UserClubRelationServlet";
@@ -220,7 +223,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Gson gson = new Gson();
+                Gson gson = GsonSingleton.getInstance();
                 List<String> clubNames = new ArrayList<String>();
                 final List<Power> powers = new ArrayList<Power>();
                 for (int i = 0; i < clubMembers.size(); i++) {
@@ -238,6 +241,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                         LogUtil.d(TAG, "click item: " + i);
                         LogUtil.d(TAG, "powers.get(i): " + powers.get(i));
                         mCurrentClubId = clubMembers.get(i).getClubId();
+                        LogUtil.d(TAG, "mCurrentClubId: " + mCurrentClubId);
                         initCell(powers.get(i));
                     }
                     @Override
@@ -335,6 +339,12 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
         startActivity(intent);
     }
 
+    private void startSubPage(View view, Class cls, int id) {
+        Intent intent = new Intent(view.getContext(), cls);
+        intent.putExtra("club_id", id);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -360,7 +370,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case STAFF_POWER:
                 testCell(view);
-                startSubPage(view, StaffPowerActivity.class);
+                startSubPage(view, StaffPowerActivity.class, mCurrentClubId);
                 break;
             case ORGANIZATION:
                 testCell(view);

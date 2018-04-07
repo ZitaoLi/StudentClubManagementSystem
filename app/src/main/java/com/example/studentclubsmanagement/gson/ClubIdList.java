@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class ClubIdList {
 
-    @SerializedName("club_id_list")
+    @SerializedName("id_list")
     private int[] clubIdArray;
 
     public int[] getClubIdArray() {

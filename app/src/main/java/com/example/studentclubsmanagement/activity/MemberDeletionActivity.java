@@ -27,7 +27,7 @@ public class MemberDeletionActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.member_deletion_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ClubMemberRecyclerViewAdapter adapter = new ClubMemberRecyclerViewAdapter(this, true);
+        ClubMemberRecyclerViewAdapter adapter = new ClubMemberRecyclerViewAdapter(this, true, null);
         recyclerView.setAdapter(adapter);
     }
 

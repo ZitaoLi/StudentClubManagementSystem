@@ -16,7 +16,22 @@ public class ClubMember {
     private String power;
     private boolean active;
     private Timestamp joinTime;
+    private String userName;
+    private String userHeaderImage;
 
+
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getUserHeaderImage() {
+        return userHeaderImage;
+    }
+    public void setUserHeaderImage(String userHeaderImage) {
+        this.userHeaderImage = userHeaderImage;
+    }
     public int getId() {
         return id;
     }
@@ -67,9 +82,11 @@ public class ClubMember {
     public void setClubName(String clubName) {
         this.clubName = clubName;
     }
+
     @Override
     public String toString() {
-        return "ClubMember [id=" + id + ", clubId=" + clubId + ", club_name=" + clubName + ", userId=" + userId
-                + ", level=" + level + ", power=" + power + ", active=" + active + ", joinTime=" + joinTime + "]";
+        return "ClubMember [id=" + id + ", clubId=" + clubId + ", clubName=" + clubName + ", userId=" + userId
+                + ", level=" + level + ", power=" + power + ", active=" + active + ", joinTime=" + joinTime
+                + ", userName=" + userName + ", userHeaderImage=" + userHeaderImage + "]";
     }
 }
