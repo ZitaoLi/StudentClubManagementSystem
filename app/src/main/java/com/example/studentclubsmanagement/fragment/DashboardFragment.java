@@ -389,7 +389,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case CONFERENCE_ORGANIZING:
                 testCell(view);
-                startSubPage(view, ConferenceOrganizingActivity.class);
+                startSubPage(view, ConferenceOrganizingActivity.class, mCurrentClubId);
                 break;
             case MESSAGE_WALL:
                 testCell(view);
