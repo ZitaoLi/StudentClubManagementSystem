@@ -43,6 +43,7 @@
                 android:paddingBottom="20dp">
 
                 <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:id="@+id/mes_push_title"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     app:hintValue="标题"
@@ -50,6 +51,7 @@
                     app:linesNumValue="1" />
 
                 <com.example.studentclubsmanagement.customview.MyTextInputLayout
+                    android:id="@+id/mes_push_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintValue="内容"
@@ -61,6 +63,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/msg_push_submit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"

@@ -374,18 +374,18 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case ORGANIZATION:
                 testCell(view);
-                startSubPage(view, ClubOrganizationActivity.class);
+                startSubPage(view, ClubOrganizationActivity.class, mCurrentClubId);
                 break;
             case CLUB_DISSOLUTION:
                 testCell(view);
                 break;
             case ACTIVITY_REQUEST:
                 testCell(view);
-                startSubPage(view, ActivityRequestActivity.class);
+                startSubPage(view, ActivityRequestActivity.class, mCurrentClubId);
                 break;
             case NEWS_PUSH:
                 testCell(view);
-                startSubPage(view, MessagePushActivity.class);
+                startSubPage(view, MessagePushActivity.class, mCurrentClubId);
                 break;
             case CONFERENCE_ORGANIZING:
                 testCell(view);

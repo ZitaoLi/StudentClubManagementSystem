@@ -19,7 +19,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/test_user_header"/>
+            android:src="@drawable/default_user"/>
 
         <TextView
             android:id="@+id/organization_member_name"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="lztao"/>
+            android:text="null"/>
 
         <ImageView
             android:id="@+id/organization_popup_menu"

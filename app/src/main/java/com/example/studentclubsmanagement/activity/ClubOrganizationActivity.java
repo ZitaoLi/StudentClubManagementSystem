@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.Adapter.ClubMemberRecyclerViewAdapter;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.gson.ClubMember;
@@ -93,9 +95,6 @@ public class ClubOrganizationActivity extends BaseActivity {
                 }
             }
         });
-        initMinister();
-        initViceMinister();
-        initStaff();
     }
 
     private void requestClubMemberInfo(List<String> userIdList) {
@@ -123,6 +122,22 @@ public class ClubOrganizationActivity extends BaseActivity {
                         @Override
                         public void run() {
                             // TODO 生成页面
+                            List<ClubMember> ministers = new ArrayList<ClubMember>();
+                            List<ClubMember> viceMinisters = new ArrayList<ClubMember>();
+                            List<ClubMember> staffs = new ArrayList<ClubMember>();
+                            for (int i = 0; i < clubMemberList.size(); i++) {
+                                ClubMember clubMember = clubMemberList.get(i);
+                                if (clubMember.getLevel() == 0) {
+                                    staffs.add(clubMember);
+                                } else if (clubMember.getLevel() == 1) {
+                                    viceMinisters.add(clubMember);
+                                } else if (clubMember.getLevel() == 2) {
+                                    ministers.add(clubMember);
+                                }
+                            }
+                            initMinister(ministers);
+                            initViceMinister(viceMinisters);
+                            initStaff(staffs);
                         }
                     });
                 } else {
@@ -144,42 +159,142 @@ public class ClubOrganizationActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMinister() {
-        LinearLayout minister = (LinearLayout) findViewById(R.id.minister);
+    private void initMinister(List<ClubMember> clubMembers) {
+        if (clubMembers.size() == 0) {
+            return;
+        }
+        LinearLayout ministerLayout = (LinearLayout) findViewById(R.id.minister);
+        ministerLayout.setVisibility(View.VISIBLE);
         LayoutInflater inflater = getLayoutInflater();
-        View item = inflater.inflate(R.layout.club_organization_item, minister, false);
-        minister.addView(item);
 
-        ImageView popupMenu = (ImageView) item.findViewById(R.id.organization_popup_menu);
-        popupMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.menu_club_organization_minister, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.exit:
-                                break;
-                            case R.id.set:
-                                break;
-                            default:
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+        for (int i = 0; i < clubMembers.size(); i++) {
+            ClubMember clubMember = clubMembers.get(i);
+            View item = inflater.inflate(R.layout.club_organization_item, ministerLayout, false);
+            ImageView userHeaderImage = item.findViewById(R.id.organization_member_head_image);
+            String userHeaderImagePath = clubMember.getUserHeaderImage();
+            if (!"".equals(userHeaderImagePath)) {
+                Glide.with(mActivity).load(mUrlPrefix + userHeaderImagePath).into(userHeaderImage);
             }
-        });
+            TextView userName = item.findViewById(R.id.organization_member_name);
+            userName.setText(clubMember.getUserName());
+            ImageView popupMenu = (ImageView) item.findViewById(R.id.organization_popup_menu);
+            popupMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                    MenuInflater inflater = popupMenu.getMenuInflater();
+                    inflater.inflate(R.menu.menu_club_organization_minister, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()) {
+                                case R.id.exit:
+                                    break;
+                                case R.id.set:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+            ministerLayout.addView(item);
+        }
     }
 
-    private void initViceMinister() {
+    private void initViceMinister(List<ClubMember> clubMembers) {
+        if (clubMembers.size() == 0) {
+            return;
+        }
+        LinearLayout viceMinisterLayout = (LinearLayout) findViewById(R.id.vice_minister);
+        viceMinisterLayout .setVisibility(View.VISIBLE);
+        LayoutInflater inflater = getLayoutInflater();
+
+        for (int i = 0; i < clubMembers.size(); i++) {
+            ClubMember clubMember = clubMembers.get(i);
+            View item = inflater.inflate(R.layout.club_organization_item, viceMinisterLayout , false);
+            ImageView userHeaderImage = item.findViewById(R.id.organization_member_head_image);
+            String userHeaderImagePath = clubMember.getUserHeaderImage();
+            if (!"".equals(userHeaderImagePath)) {
+                Glide.with(mActivity).load(mUrlPrefix + userHeaderImagePath).into(userHeaderImage);
+            }
+            TextView userName = item.findViewById(R.id.organization_member_name);
+            userName.setText(clubMember.getUserName());
+            ImageView popupMenu = (ImageView) item.findViewById(R.id.organization_popup_menu);
+            popupMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                    MenuInflater inflater = popupMenu.getMenuInflater();
+                    inflater.inflate(R.menu.menu_club_organization_vice_minister, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()) {
+                                case R.id.exit:
+                                    break;
+                                case R.id.set:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+            viceMinisterLayout .addView(item);
+        }
     }
 
-    private void initStaff() {
+    private void initStaff(List<ClubMember> clubMembers) {
+        if (clubMembers.size() == 0) {
+            return;
+        }
+        LinearLayout staffLayout = (LinearLayout) findViewById(R.id.staff);
+        staffLayout .setVisibility(View.VISIBLE);
+        LayoutInflater inflater = getLayoutInflater();
+
+        for (int i = 0; i < clubMembers.size(); i++) {
+            ClubMember clubMember = clubMembers.get(i);
+            View item = inflater.inflate(R.layout.club_organization_item, staffLayout , false);
+            ImageView userHeaderImage = item.findViewById(R.id.organization_member_head_image);
+            String userHeaderImagePath = clubMember.getUserHeaderImage();
+            if (!"".equals(userHeaderImagePath)) {
+                Glide.with(mActivity).load(mUrlPrefix + userHeaderImagePath).into(userHeaderImage);
+            }
+            TextView userName = item.findViewById(R.id.organization_member_name);
+            userName.setText(clubMember.getUserName());
+            ImageView popupMenu = (ImageView) item.findViewById(R.id.organization_popup_menu);
+            popupMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                    MenuInflater inflater = popupMenu.getMenuInflater();
+                    inflater.inflate(R.menu.menu_club_organization_staff, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()) {
+                                case R.id.exit:
+                                    break;
+                                case R.id.set:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+            staffLayout .addView(item);
+        }
     }
 
     class ViewHolder {

@@ -24,7 +24,8 @@
         android:id="@+id/minister"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -41,7 +42,8 @@
         android:id="@+id/vice_minister"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -50,7 +52,7 @@
             android:paddingTop="5dp"
             android:textSize="?attr/fontsize_medium"
             android:background="@drawable/linearlayout_border_bottom"
-            android:text="副部长"/>
+            android:text="副部长" />
 
     </LinearLayout>
 
@@ -58,7 +60,8 @@
         android:id="@+id/staff"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
