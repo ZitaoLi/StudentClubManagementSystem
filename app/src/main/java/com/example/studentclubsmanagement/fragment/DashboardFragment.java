@@ -366,7 +366,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case MEMBER_DELETION:
                 testCell(view);
-                startSubPage(view, MemberDeletionActivity.class);
+                startSubPage(view, MemberDeletionActivity.class, mCurrentClubId);
                 break;
             case STAFF_POWER:
                 testCell(view);
