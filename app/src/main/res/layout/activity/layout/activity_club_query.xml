@@ -41,7 +41,7 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:id="@+id/club_creation_title"
+                    android:id="@+id/club_query_search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="请输入社团ID或社团名称"/>
@@ -49,6 +49,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <ImageButton
+                android:id="@+id/club_query_search_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_check_black_24dp"/>

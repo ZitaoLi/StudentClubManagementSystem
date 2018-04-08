@@ -53,14 +53,11 @@ public class ClubInfoActivity extends BaseActivity {
 
         ImmersionUtil.setImmersion(this);
 
-//        initToolbar();
-        initClubId();
-        loadPage();
-    }
-
-    private void initClubId() {
         Intent intent = getIntent();
-        mClubId = intent.getIntExtra("club_id", 13);
+        mClubId = intent.getIntExtra("club_id", 0);
+        if (mClubId != 0) {
+            loadPage();
+        }
     }
 
     private void loadPage() {
