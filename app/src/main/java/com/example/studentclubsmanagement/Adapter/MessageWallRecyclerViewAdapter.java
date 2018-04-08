@@ -12,7 +12,17 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.activity.ClubInfoActivity;
+import com.example.studentclubsmanagement.activity.MessagePushActivity;
+import com.example.studentclubsmanagement.gson.ClubConferenceOrganizing;
+import com.example.studentclubsmanagement.gson.ClubInternalTransaction;
+import com.example.studentclubsmanagement.gson.ClubMessagePush;
+import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.gc.materialdesign.views.Card;
+import com.google.gson.Gson;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by 李子韬 on 2018/3/24.
@@ -20,7 +30,15 @@ import com.gc.materialdesign.views.Card;
 
 public class MessageWallRecyclerViewAdapter extends RecyclerView.Adapter<MessageWallRecyclerViewAdapter.ViewHolder> {
 
+    public static int CLUB_MESSAGE_PUSH = 1;
+    public static int CLUB_CONFERENCE_ORGANIZING = 2;
     private Context mContext;
+    private List<ClubInternalTransaction> mClubInternalTransactions;
+
+    public MessageWallRecyclerViewAdapter(Context context, List<ClubInternalTransaction> clubInternalTransactions) {
+        mContext = context;
+        mClubInternalTransactions = clubInternalTransactions;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,17 +51,43 @@ public class MessageWallRecyclerViewAdapter extends RecyclerView.Adapter<Message
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText("There is title");
-        holder.publisher.setText("Lztao");
-        holder.releasedTime.setText("2018-03-24");
-        holder.content.setText("There is content");
-        holder.type.setText("inner message");
+        ClubInternalTransaction clubInternalTransaction = mClubInternalTransactions.get(position);
+        String body = clubInternalTransaction.getBody();
+        int typeCode = clubInternalTransaction.getTransacitonType();
+        Timestamp createdTime = clubInternalTransaction.getCreatedTime();
+        // TODO 解析body
+        String title = "";
+        String time = "";
+        String userName = "";
+        String type = "";
+        String content = "";
+        if (typeCode == CLUB_MESSAGE_PUSH) {
+            ClubMessagePush clubMessagePush = GsonSingleton.getInstance().fromJson(body, ClubMessagePush.class);
+            title = clubMessagePush.getTitle();
+            time = createdTime.toString();
+            userName = clubMessagePush.getUserName();
+            type = "消息";
+            content = clubMessagePush.getContent();
+        } else if (typeCode == CLUB_CONFERENCE_ORGANIZING) {
+            ClubConferenceOrganizing clubConferenceOrganizing = GsonSingleton.getInstance().fromJson(body, ClubConferenceOrganizing.class);
+            title = clubConferenceOrganizing.getTitle();
+            time = createdTime.toString();
+            userName = clubConferenceOrganizing.getUserName();
+            type = "会议";
+            content = clubConferenceOrganizing.getContent();
+        }
+
+        holder.title.setText(title);
+        holder.publisher.setText(userName);
+        holder.releasedTime.setText(time);
+        holder.content.setText(content);
+        holder.type.setText(type);
         holder.cardView.setOnClickListener(new OnClickListenerImp());
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return mClubInternalTransactions.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,7 +112,7 @@ public class MessageWallRecyclerViewAdapter extends RecyclerView.Adapter<Message
     class OnClickListenerImp implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, "click cardview", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "click cardview", Toast.LENGTH_SHORT).show();
         }
     }
 }

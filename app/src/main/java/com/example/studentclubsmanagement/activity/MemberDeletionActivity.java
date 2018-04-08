@@ -11,14 +11,20 @@ import android.widget.LinearLayout;
 
 import com.example.studentclubsmanagement.Adapter.ClubMemberRecyclerViewAdapter;
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.gson.ClubMember;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemberDeletionActivity extends BaseActivity {
+
+    private List<ClubMember> mClubMemberList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_deletion);
-
+        mClubMemberList = new ArrayList<ClubMember>();
         initToolbar();
         initClubMemberList();
     }
@@ -27,7 +33,7 @@ public class MemberDeletionActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.member_deletion_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ClubMemberRecyclerViewAdapter adapter = new ClubMemberRecyclerViewAdapter(this, true, null);
+        ClubMemberRecyclerViewAdapter adapter = new ClubMemberRecyclerViewAdapter(this, true, mClubMemberList);
         recyclerView.setAdapter(adapter);
     }
 
