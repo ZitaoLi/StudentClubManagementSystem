@@ -84,7 +84,7 @@ public class MineFragment extends BaseFragment {
 
     private void initBriefUserInfo(final View view) {
         SharedPreferences sp = this.getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        mUserId = sp.getInt("user_id", 0);
+        mUserId = sp.getInt("user_id", 1);
         LogUtil.d(TAG, "user_id: " + mUserId);
         mUrlPrefix = HttpUtil.getUrlPrefix(this.getActivity());
         String url = mUrlPrefix + "/controller/UserInfoServlet";
@@ -108,6 +108,9 @@ public class MineFragment extends BaseFragment {
     }
 
     private void showResponseData(final View view, final String json) {
+        if ("".equals(json) || json == null) {
+            return;
+        }
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

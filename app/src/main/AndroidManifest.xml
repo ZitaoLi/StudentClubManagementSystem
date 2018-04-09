@@ -39,8 +39,8 @@
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.LauncherActivity" />
         <activity android:name=".activity.RegistertActivity" />
-        <activity android:name=".activity.TestUploadImgActivity"></activity>
-        
+        <activity android:name=".activity.TestUploadImgActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.studentclubsmanagement.fileprovider"
@@ -48,8 +48,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".activity.UserRequestActivity"></activity>
     </application>
 
 </manifest>

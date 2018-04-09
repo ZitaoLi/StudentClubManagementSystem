@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.fragment.AdminTransactionFragment;
 import com.example.studentclubsmanagement.fragment.DashboardFragment;
 import com.example.studentclubsmanagement.fragment.MineFragment;
 import com.example.studentclubsmanagement.fragment.SquareFragment;
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity {
             initUserScreenSlide();
         } else {
             int adminId = sp.getInt("admin_id", 0);
-            LogUtil.d(TAG, "user_id: " + adminId);
+            LogUtil.d(TAG, "admin_id: " + adminId);
             initAdimnScreenSlide();
         }
     }
@@ -126,8 +127,8 @@ public class MainActivity extends BaseActivity {
     private void initAdimnScreenSlide() {
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(new SquareFragment());
-        fragmentList.add(new DashboardFragment());
-        fragmentList.add(new MineFragment());
+        fragmentList.add(new AdminTransactionFragment());
+//        fragmentList.add(new MineFragment());
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -135,8 +136,8 @@ public class MainActivity extends BaseActivity {
         tab = (PageNavigationView) findViewById(R.id.tab);
         navigationController = tab.material()
                 .addItem(android.R.drawable.ic_menu_camera, "广场")
-                .addItem(android.R.drawable.ic_dialog_dialer, "仪表盘")
-                .addItem(android.R.drawable.ic_menu_search, "我的")
+                .addItem(android.R.drawable.ic_dialog_dialer, "消息列表")
+//                .addItem(android.R.drawable.ic_menu_search, "我的")
                 .build();
         navigationController.setupWithViewPager(viewPager);
     }

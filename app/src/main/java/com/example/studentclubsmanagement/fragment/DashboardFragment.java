@@ -97,7 +97,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     private Map<Integer, List> mCellIdTextMap;
     private static final String TAG = "DashboardFragment";
     private static final int NUM_OF_COLUMN = 4;
-    private int[] mLayer = new int[] { R.id.layer_1, R.id.layer_1, R.id.layer_1  };
+    private int[] mLayer = new int[] { R.id.layer_1, R.id.layer_2, R.id.layer_3  };
     private DashboardRecyclerViewAdapter adapter;
     private List<List<Integer>> data;
     private boolean isSpinnerFirst = true;
@@ -127,7 +127,7 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     private void loadPage() {
         LogUtil.d(TAG, "load page");
         SharedPreferences sp = this.getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        mUserId = sp.getInt("user_id", 0);
+        mUserId = sp.getInt("user_id", 1);
         LogUtil.d(TAG, "user_id: " + mUserId);
         mActivity = this.getActivity();
         mUrlPrefix = HttpUtil.getUrlPrefix(mActivity);
@@ -189,6 +189,9 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
     }
 
     private void requestClubMemberInfo(List<String> clubIdList) {
+        if (clubIdList == null) {
+            return;
+        }
         String url = mUrlPrefix + "/controller/MultiClubMemberInfoServlet";
         FormBody.Builder bodyBuilder = new FormBody.Builder();
         for (int i = 0; i < clubIdList.size(); i++) {
@@ -270,6 +273,12 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
 //        data.add(Arrays.asList(1,2,3));
 //        data.add(Arrays.asList(4, 5, 6, 7, 8));
 //        data.add(Arrays.asList(9, 10, 11, 12));
+
+        // TODO 清空子控件
+        for (int i = 0; i < 3; i++) {
+            LinearLayout linearLayout = (LinearLayout) mView.findViewById(mLayer[i]);
+            linearLayout.removeAllViews();
+        }
 
         for (int i = 0; i < powerItems.size() - 1; i++) {
             LinearLayout linearLayout = (LinearLayout) mView.findViewById(mLayer[i]);
@@ -402,18 +411,18 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
 
     private void initCellIdTextMap() {
         mCellIdTextMap = new HashMap<Integer, List>();
-        mCellIdTextMap.put(CLUB_ACCESS, Arrays.asList(new String("入团申请"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(CLUB_CREATION, Arrays.asList(new String("社团创建"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(CLUB_QUERY, Arrays.asList(new String("社团查询"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(MEMBER_ADDITION, Arrays.asList(new String("成员添加"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(MEMBER_DELETION, Arrays.asList(new String ("成员删除"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(STAFF_POWER, Arrays.asList(new String("干事权限"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(ORGANIZATION, Arrays.asList(new String("组织结构"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(CLUB_DISSOLUTION, Arrays.asList(new String("社团解除"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(ACTIVITY_REQUEST, Arrays.asList(new String ("活动申请"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(NEWS_PUSH, Arrays.asList(new String("消息推送"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(CONFERENCE_ORGANIZING, Arrays.asList(new String("会议组织"), R.drawable.ic_mood_black_24dp));
-        mCellIdTextMap.put(MESSAGE_WALL, Arrays.asList(new String("消息墙"), R.drawable.ic_mood_black_24dp));
+        mCellIdTextMap.put(CLUB_ACCESS, Arrays.asList(new String("入团申请"), R.drawable.ic_club_access));
+        mCellIdTextMap.put(CLUB_CREATION, Arrays.asList(new String("社团创建"), R.drawable.ic_club_creation));
+        mCellIdTextMap.put(CLUB_QUERY, Arrays.asList(new String("社团查询"), R.drawable.ic_club_query));
+        mCellIdTextMap.put(MEMBER_ADDITION, Arrays.asList(new String("成员添加"), R.drawable.ic_club_member_addition));
+        mCellIdTextMap.put(MEMBER_DELETION, Arrays.asList(new String ("成员删除"), R.drawable.ic_club_member_deletion));
+        mCellIdTextMap.put(STAFF_POWER, Arrays.asList(new String("干事权限"), R.drawable.ic_club_member_power));
+        mCellIdTextMap.put(ORGANIZATION, Arrays.asList(new String("组织结构"), R.drawable.ic_club_organization));
+        mCellIdTextMap.put(CLUB_DISSOLUTION, Arrays.asList(new String("社团解除"), R.drawable.ic_club_dissolution));
+        mCellIdTextMap.put(ACTIVITY_REQUEST, Arrays.asList(new String ("活动申请"), R.drawable.ic_club_activity_request));
+        mCellIdTextMap.put(NEWS_PUSH, Arrays.asList(new String("消息推送"), R.drawable.ic_club_message_push));
+        mCellIdTextMap.put(CONFERENCE_ORGANIZING, Arrays.asList(new String("会议组织"), R.drawable.ic_club_conference));
+        mCellIdTextMap.put(MESSAGE_WALL, Arrays.asList(new String("消息墙"), R.drawable.ic_club_message_wall));
 
 //        mCellIdTextMap.put(CLUB_CREATION, "社团创建");
 //        mCellIdTextMap.put(CLUB_QUERY, "社团查询");

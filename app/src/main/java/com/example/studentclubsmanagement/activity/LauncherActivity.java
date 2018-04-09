@@ -82,8 +82,8 @@ public class LauncherActivity extends BaseActivity {
         CheckBox adminCheckBox = (CheckBox) findViewById(R.id.launcher_page_admin_checkbox);
 
         private ViewHolder() {
-            textInputLayout1.getEditText().setText("1407300306");
-            textInputLayout2.getEditText().setText("lztao");
+            textInputLayout1.getEditText().setText("admin001");
+            textInputLayout2.getEditText().setText("admin001");
 
             cardView.setOnClickListener(new OnClickListenerImpl());
             signInButton.setOnClickListener(new OnClickListenerImpl());
@@ -115,8 +115,14 @@ public class LauncherActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 int userId = Integer.parseInt(response.body().string());
-                if (userId == 0) LogUtil.d(TAG, "password no match");
-                if (userId == -1) LogUtil.d(TAG, "account no exist");
+                if (userId == 0) {
+                    LogUtil.d(TAG, "password no match");
+                    return;
+                }
+                if (userId == -1) {
+                    LogUtil.d(TAG, "account no exist");
+                    return;
+                }
                 LogUtil.d(TAG, "post success");
                 // TODO 持久化user_id
                 SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
@@ -133,11 +139,11 @@ public class LauncherActivity extends BaseActivity {
 
     private void adminSignIn() {
         mUrlPrefix = HttpUtil.getUrlPrefix(mContext);
-        String url = mUrlPrefix + "/controller/AdminSignInServlet";;
+        String url = mUrlPrefix + "/controller/AdminSignInServlet";
         String adminName = mHolder.textInputLayout1.getEditText().getText().toString();
         String password = mHolder.textInputLayout2.getEditText().getText().toString();
         RequestBody body = new FormBody.Builder()
-                .add("name", adminName)
+                .add("admin_name", adminName)
                 .add("password", password)
                 .build();
         HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {
@@ -148,8 +154,14 @@ public class LauncherActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 int userId = Integer.parseInt(response.body().string());
-                if (userId == 0) LogUtil.d(TAG, "password no match");
-                if (userId == -1) LogUtil.d(TAG, "administrator no exist");
+                if (userId == 0) {
+                    LogUtil.d(TAG, "password no match");
+                    return;
+                }
+                if (userId == -1) {
+                    LogUtil.d(TAG, "account no exist");
+                    return;
+                }
                 LogUtil.d(TAG, "post success");
                 // TODO 持久化user_id
                 SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();

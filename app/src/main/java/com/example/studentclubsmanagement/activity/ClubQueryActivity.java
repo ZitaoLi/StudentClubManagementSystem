@@ -71,8 +71,9 @@ public class ClubQueryActivity extends BaseActivity {
                         .show();
                 LogUtil.d(TAG, "send data");
                 if (!"".equals(clubName) && clubName != null) {
-                    String url = mUrlPrefix + "/controller/ClubInfoServlet";
+                    String url = mUrlPrefix + "/controller/UserRequestServlet";
                     RequestBody body = new FormBody.Builder()
+                            .add("type", "club_query")
                             .add("club_name", clubName)
                             .build();
                     HttpUtil.sendOkHttpRequestWithPost(url, body, new okhttp3.Callback() {

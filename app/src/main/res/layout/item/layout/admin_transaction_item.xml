@@ -2,15 +2,16 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/admin_transaction_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
     app:cardCornerRadius="4dp">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_bottom"
         android:padding="10dp">
 
         <LinearLayout
@@ -19,22 +20,25 @@
             android:layout_height="?attr/item_height_1"
             android:gravity="center_vertical">
             <TextView
-                android:id="@+id/message_wall_title"
+                android:id="@+id/admin_transaction_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/shape_button_rounded_rect_color_primary"
+                android:textColor="?attr/colorPrimary"
+                android:text="type"/>
+            <TextView
+                android:id="@+id/admin_transaction_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="?attr/fontsize_large"
                 android:textStyle="bold"
-                android:text="title"/>
-            <TextView
-                android:id="@+id/message_wall_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="5dp"
-                android:background="@drawable/shape_button_rounded_rect_color_primary"
-                android:textColor="?attr/colorPrimary"
-                android:text="type"/>
+                android:text="title"
+                android:maxLines="2"
+                android:ellipsize="end"/>
         </LinearLayout>
 
         <LinearLayout
@@ -42,14 +46,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/message_wall_publisher"
+                android:id="@+id/admin_transaction_request_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:textSize="?attr/fontsize_small"
                 android:text="who"/>
             <TextView
-                android:id="@+id/message_wall_released_time"
+                android:id="@+id/admin_transaction_request_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="?attr/fontsize_small"
@@ -60,11 +64,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/message_wall_content"
+                android:id="@+id/admin_transaction_content_brief"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/item_height_1"
                 android:textSize="?attr/fontsize_medium"
                 android:minLines="2"
+                android:maxLines="5"
+                android:ellipsize="end"
                 android:text="content"/>
         </LinearLayout>
 
