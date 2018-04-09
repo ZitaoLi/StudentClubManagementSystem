@@ -97,6 +97,10 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this, TestUploadImgActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.test_floating_action_button:
+                intent = new Intent(this, TestFloatingActionButtonActivity.class);
+                startActivity(intent);
+                break;
         }
         return true;
     }

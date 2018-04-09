@@ -2,6 +2,7 @@ package com.example.studentclubsmanagement.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.customview.ImageViewer;
 import com.example.studentclubsmanagement.gson.ClubMember;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.example.studentclubsmanagement.gson.News;
@@ -32,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -110,6 +113,7 @@ public class Newactivity extends BaseActivity {
                 String  additionalImagePath = news.getImagePath();
                 if (!"".equals(additionalImagePath)) {
                     Glide.with(mActivity).load(mUrlPrefix + news.getImagePath()).into(mHolder.additionalImage);
+                    mHolder.additionalImage.setTag(news.getImagePath());
                 }
                 String userHeaderImagePath = news.getUserHeaderImagePath();
                 if (!"".equals(userHeaderImagePath)) {
@@ -130,7 +134,7 @@ public class Newactivity extends BaseActivity {
                 e.printStackTrace();
             }
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, final Response response) throws IOException {
                 LogUtil.d(TAG, "post success");
                 final String responseData = response.body().string();
                 LogUtil.d(TAG, responseData);
@@ -141,6 +145,7 @@ public class Newactivity extends BaseActivity {
                         if (!"".equals(responseData)) {
                             Glide.with(mActivity).load(mUrlPrefix + responseData).into(mHolder.clubBgImage);
                         }
+                        mHolder.clubBgImage.setTag(responseData);
                     }
                 });
             }
@@ -178,6 +183,8 @@ public class Newactivity extends BaseActivity {
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
             floatingActionButton.setOnClickListener(new OnClickListenerImpl());
+            clubBgImage.setOnClickListener(new OnClickListenerImpl());
+            additionalImage.setOnClickListener(new OnClickListenerImpl());
         }
     }
 
@@ -187,6 +194,22 @@ public class Newactivity extends BaseActivity {
             switch (view.getId()) {
                 case R.id.new_floating_action_button:
                     Toast.makeText(mActivity, "news_id:" + mNewsId, Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.news_club_bg_image:
+                    // TODO 点击加载大图
+                    String url = (String) view.getTag();
+                    LogUtil.d(TAG, "url: " + url);
+                    ImageViewer.Builder builder = new ImageViewer.Builder(getBaseContext());
+                    ImageViewer imageViewer = builder.setUrl(url).build();
+                    imageViewer.show(getSupportFragmentManager(), "image_viewer");
+                    break;
+                case R.id.news_additional_image:
+                    // TODO 点击加载大图
+                    url = (String) view.getTag();
+                    LogUtil.d(TAG, "url: " + url);
+                    builder = new ImageViewer.Builder(getBaseContext());
+                    imageViewer = builder.setUrl(url).build();
+                    imageViewer.show(getSupportFragmentManager(), "image_viewer");
                     break;
                 default:
                     break;

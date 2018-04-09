@@ -107,6 +107,7 @@ public class ClubManagementTransactionRecyclerViewAdapter extends RecyclerView.A
                     String body = clubManagementTransaction.getBody();
                     Intent intent = new Intent(mContext, UserRequestActivity.class);
                     intent.putExtra("body", body);
+                    intent.putExtra("request_time", mClubManagementTransactions.get(position).getCreatedTime().toString());
                     intent.putExtra("type", mClubManagementTransactions.get(position).getTransactionType());
                     mContext.startActivity(intent);
                 }

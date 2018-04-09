@@ -28,4 +28,9 @@
         android:orderInCategory="0"
         android:title="TestUploadImgActivity"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/test_floating_action_button"
+        android:orderInCategory="0"
+        android:title="TestFloatingActionButtonActivity"
+        app:showAsAction="never" />
 </menu>
