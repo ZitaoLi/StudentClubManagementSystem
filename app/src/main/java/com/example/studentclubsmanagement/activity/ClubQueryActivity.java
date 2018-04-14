@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.studentclubsmanagement.Adapter.ClubBriefInfoRecyclerViewAdapter;
 import com.example.studentclubsmanagement.Adapter.MessageWallRecyclerViewAdapter;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.gson.Club;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -58,6 +62,37 @@ public class ClubQueryActivity extends BaseActivity {
         final EditText searchBar = (EditText) findViewById(R.id.club_query_search_bar);
         final ImageButton searchBtn = (ImageButton) findViewById(R.id.club_query_search_btn);
         final ZLoadingDialog dialog = new ZLoadingDialog(mActivity);
+
+        String url = HttpUtil.getUrlPrefix(this) + "/controller/ClubInfoServlet";
+        HttpUtil.sendOkHttpRequestWithGet(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseData = response.body().string();
+                if (!"".equals(responseData)) {
+                    if ("0".equals(responseData)) {
+                        return;
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Club> clubs = GsonSingleton.getInstance().fromJson(responseData, new TypeToken<List<Club>>(){}.getType());
+                            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.club_query_recycler_view);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+                            recyclerView.setLayoutManager(layoutManager);
+                            RecyclerView.Adapter adapter = new ClubBriefInfoRecyclerViewAdapter(mActivity, clubs);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                } else {
+                    HttpUtil.showToastOnUI(mActivity, "出错");
+                }
+            }
+        });
 
         searchBar.setText("雨无声");
 

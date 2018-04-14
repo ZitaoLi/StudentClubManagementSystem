@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/linearlayout_border_bottom">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/club_brief_info_club_header"
+        android:layout_width="?attr/item_height_1"
+        android:layout_height="?attr/item_height_1"
+        android:src="@drawable/default_user"/>
+
+    <TextView
+        android:id="@+id/club_brief_info_club_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="?attr/item_height_1"
+        android:gravity="center_vertical"
+        android:textSize="?attr/fontsize_medium"
+        android:layout_marginLeft="10dp"
+        android:text="club name"/>
+
+</LinearLayout>

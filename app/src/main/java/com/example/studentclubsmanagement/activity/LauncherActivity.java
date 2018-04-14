@@ -82,8 +82,8 @@ public class LauncherActivity extends BaseActivity {
         CheckBox adminCheckBox = (CheckBox) findViewById(R.id.launcher_page_admin_checkbox);
 
         private ViewHolder() {
-            textInputLayout1.getEditText().setText("admin001");
-            textInputLayout2.getEditText().setText("admin001");
+            textInputLayout1.getEditText().setText("1407300306");
+            textInputLayout2.getEditText().setText("lztao");
 
             cardView.setOnClickListener(new OnClickListenerImpl());
             signInButton.setOnClickListener(new OnClickListenerImpl());
