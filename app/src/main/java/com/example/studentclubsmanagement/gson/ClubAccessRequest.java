@@ -17,7 +17,7 @@ public class ClubAccessRequest {
     private String userName;
     @SerializedName("user_header_image_path")
     private String userImageHeader;
-    
+
     public String getUserImageHeader() {
         return userImageHeader;
     }

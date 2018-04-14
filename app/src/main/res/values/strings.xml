@@ -19,6 +19,6 @@
     <string name="conference_organization">11</string>
     <string name="message_wall">12</string>
 
-    <string name="server">http://192.168.0.118:8080</string>
+    <string name="server">http://192.168.0.121:8080</string>
     <string name="root_path">/StudentClubManagementSystem</string>
 </resources>

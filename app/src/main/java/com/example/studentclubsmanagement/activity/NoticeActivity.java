@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.studentclubsmanagement.R;
 
-public class NoticeActivity extends AppCompatActivity {
+public class NoticeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

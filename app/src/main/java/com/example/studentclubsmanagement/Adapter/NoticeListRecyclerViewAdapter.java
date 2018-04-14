@@ -78,6 +78,12 @@ public class NoticeListRecyclerViewAdapter extends RecyclerView.Adapter<NoticeLi
         return mNoticeList.size();
     }
 
+    public void removeItem(int position) {
+        mNoticeList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mNoticeList.size());
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
