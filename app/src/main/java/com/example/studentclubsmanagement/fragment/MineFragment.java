@@ -20,6 +20,7 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.activity.NoticeListActivity;
 import com.example.studentclubsmanagement.activity.UserInfoActivity;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.example.studentclubsmanagement.gson.User;
@@ -63,14 +64,17 @@ public class MineFragment extends BaseFragment {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.mine_nav_my_info:
-                        Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                        intent = new Intent(getActivity(), UserInfoActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.mine_nav_my_club:
                         return true;
                     case R.id.mine_nav_my_msg:
+                        intent = new Intent(getActivity(), NoticeListActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.mine_nav_my_collection:
                         return true;

@@ -53,7 +53,8 @@
 
         <activity android:name=".activity.UserRequestActivity" />
         <activity android:name=".activity.TestFloatingActionButtonActivity" />
-        <activity android:name=".activity.NoticeListActivity"></activity>
+        <activity android:name=".activity.NoticeListActivity" />
+        <activity android:name=".activity.NoticeActivity"></activity>
     </application>
 
 </manifest>
