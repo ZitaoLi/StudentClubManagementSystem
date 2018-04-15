@@ -1,7 +1,10 @@
 package com.example.studentclubsmanagement.Adapter;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.activity.NoticeActivity;
 import com.example.studentclubsmanagement.activity.NoticeListActivity;
+import com.example.studentclubsmanagement.fragment.NoticeDialogFragment;
 import com.example.studentclubsmanagement.gson.ClubAccessRequest;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.example.studentclubsmanagement.gson.Notice;
@@ -107,10 +111,15 @@ public class NoticeListRecyclerViewAdapter extends RecyclerView.Adapter<NoticeLi
                 public void onClick(View view) {
                     int position = (int) view.getTag();
                     Notice notice = mNoticeList.get(position);
-                    Intent intent = new Intent(mContext, NoticeActivity.class);
-                    intent.putExtra("type", notice.getNoticeType());
-                    intent.putExtra("body", notice.getBody());
-                    mContext.startActivity(intent);
+//                    Intent intent = new Intent(mContext, NoticeActivity.class);
+//                    intent.putExtra("type", notice.getNoticeType());
+//                    intent.putExtra("body", notice.getBody());
+//                    mContext.startActivity(intent);
+                    NoticeDialogFragment dialogFragment = new NoticeDialogFragment();
+                    FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
+                    dialogFragment.setNoticeType(notice.getNoticeType());
+                    dialogFragment.setBody(notice.getBody());
+                    dialogFragment.show(manager, "notice_dialog");
                 }
             });
         }

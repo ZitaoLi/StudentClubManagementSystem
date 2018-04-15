@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:maxHeight="300dp">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/item_height_1"
+                    android:gravity="center_vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/notice_dialog_user_header"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/default_user"/>
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="0dp"/>
+                    <TextView
+                        android:id="@+id/notice_dialog_user_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="username"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/notice_dialog_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="?attr/fontsize_small"
+                    android:textStyle="bold"
+                    android:minLines="2"
+                    android:text="title"/>
+
+                <TextView
+                    android:id="@+id/notice_dialog_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="?attr/fontsize_small"
+                    android:minLines="3"
+                    android:text="content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="right|center_vertical"
+                    android:background="@drawable/linearlayout_border_top">
+
+                    <com.gc.materialdesign.views.ButtonFlat
+                        android:id="@+id/notice_dialog_btn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关闭"/>
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/notice_dialog_btn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="已读"/>
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/notice_dialog_btn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="#ff9900"
+                        android:visibility="gone"
+                        android:text="拒绝"/>
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/notice_dialog_btn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="#339966"
+                        android:text="同意"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>
