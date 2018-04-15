@@ -20,6 +20,7 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.studentclubsmanagement.R;
+import com.example.studentclubsmanagement.activity.ClubListActivity;
 import com.example.studentclubsmanagement.activity.NoticeListActivity;
 import com.example.studentclubsmanagement.activity.UserInfoActivity;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
@@ -71,6 +72,8 @@ public class MineFragment extends BaseFragment {
                         startActivity(intent);
                         return true;
                     case R.id.mine_nav_my_club:
+                        intent = new Intent(getActivity(), ClubListActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.mine_nav_my_msg:
                         intent = new Intent(getActivity(), NoticeListActivity.class);

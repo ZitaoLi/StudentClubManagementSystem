@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.studentclubsmanagement.Adapter.NoticeListRecyclerViewAdapter;
@@ -57,6 +58,18 @@ public class NoticeListActivity extends BaseActivity {
             String url = HttpUtil.getUrlPrefix(this) + "/controller/NoticePullerServlet";
             HttpUtil.sendOkHttpRequestWithPost(url, body, new CallBackImpl());
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class CallBackImpl implements Callback {

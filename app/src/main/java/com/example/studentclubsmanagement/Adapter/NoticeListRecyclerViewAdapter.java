@@ -16,6 +16,8 @@ import com.example.studentclubsmanagement.activity.NoticeActivity;
 import com.example.studentclubsmanagement.activity.NoticeListActivity;
 import com.example.studentclubsmanagement.fragment.NoticeDialogFragment;
 import com.example.studentclubsmanagement.gson.ClubAccessRequest;
+import com.example.studentclubsmanagement.gson.ClubConferenceOrganizing;
+import com.example.studentclubsmanagement.gson.ClubMessagePush;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
 import com.example.studentclubsmanagement.gson.Notice;
 
@@ -33,6 +35,10 @@ public class NoticeListRecyclerViewAdapter extends RecyclerView.Adapter<NoticeLi
     public NoticeListRecyclerViewAdapter(Context context, List<Notice> noticeLit) {
         mContext = context;
         mNoticeList = noticeLit;
+    }
+
+    public List<Notice> getNoticeList() {
+        return mNoticeList;
     }
 
     @Override
@@ -58,8 +64,20 @@ public class NoticeListRecyclerViewAdapter extends RecyclerView.Adapter<NoticeLi
             // 系统通知
         } else if (noticeType == 2) {
             // 社团内部通知
+            ClubMessagePush request = GsonSingleton.getInstance().fromJson(body, ClubMessagePush.class);
+            title = request.getTitle();
+            sender = request.getUserName();
+            sendTime = notice.getCreatedTime().toString();
+            content = request.getContent();
+            type = "社团内部通知";
         } else if (noticeType == 3) {
             // 社团会议消息
+            ClubConferenceOrganizing request = GsonSingleton.getInstance().fromJson(body, ClubConferenceOrganizing.class);
+            title = request.getTitle();
+            sender = request.getUserName();
+            sendTime = notice.getCreatedTime().toString();
+            content = request.getContent();
+            type = "社团会议通知";
         } else if (noticeType == 4) {
             // 入团申请通知
             ClubAccessRequest request = GsonSingleton.getInstance().fromJson(body, ClubAccessRequest.class);
@@ -119,6 +137,8 @@ public class NoticeListRecyclerViewAdapter extends RecyclerView.Adapter<NoticeLi
                     FragmentManager manager = ((AppCompatActivity)mContext).getSupportFragmentManager();
                     dialogFragment.setNoticeType(notice.getNoticeType());
                     dialogFragment.setBody(notice.getBody());
+                    dialogFragment.setPosition(position);
+                    dialogFragment.setAdapter(NoticeListRecyclerViewAdapter.this);
                     dialogFragment.show(manager, "notice_dialog");
                 }
             });

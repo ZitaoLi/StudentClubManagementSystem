@@ -1,11 +1,15 @@
 package com.example.studentclubsmanagement.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -371,7 +375,11 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case MEMBER_ADDITION:
                 testCell(view);
-                startSubPage(view, MemberAdditionActivity.class);
+//                startSubPage(view, MemberAdditionActivity.class);
+                MemberAdditionDialogFragment dialogFragment1 = new MemberAdditionDialogFragment();
+                FragmentManager manager1 = getActivity().getSupportFragmentManager();
+                dialogFragment1.setCancelable(false);
+                dialogFragment1.show(manager1, "member_addition_dialog");
                 break;
             case MEMBER_DELETION:
                 testCell(view);
@@ -387,6 +395,10 @@ public class DashboardFragment extends BaseFragment implements  DashboardRecycle
                 break;
             case CLUB_DISSOLUTION:
                 testCell(view);
+                ClubDissolutionDialogFragment dialogFragment2 = new ClubDissolutionDialogFragment();
+                FragmentManager manager2 = getActivity().getSupportFragmentManager();
+                dialogFragment2.setCancelable(false);
+                dialogFragment2.show(manager2, "club_dissolution_dialog");
                 break;
             case ACTIVITY_REQUEST:
                 testCell(view);

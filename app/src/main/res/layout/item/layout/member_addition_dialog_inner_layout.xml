@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <com.example.studentclubsmanagement.customview.MyTextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintValue="学号"
+        app:imageResourceValue="@drawable/ic_mood_black_24dp"
+        app:linesNumValue="1" />
+
+    <com.example.studentclubsmanagement.customview.MyTextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintValue="称号"
+        app:imageResourceValue="@drawable/ic_mood_black_24dp"
+        app:linesNumValue="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mood_black_24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"/>
+
+        <Spinner
+            android:id="@+id/member_addition_sex_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

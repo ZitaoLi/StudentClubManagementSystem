@@ -13,15 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.studentclubsmanagement.Adapter.NoticeListRecyclerViewAdapter;
 import com.example.studentclubsmanagement.R;
 import com.example.studentclubsmanagement.activity.BaseActivity;
 import com.example.studentclubsmanagement.gson.ClubAccessRequest;
+import com.example.studentclubsmanagement.gson.ClubConferenceOrganizing;
+import com.example.studentclubsmanagement.gson.ClubMessagePush;
 import com.example.studentclubsmanagement.gson.GsonSingleton;
+import com.example.studentclubsmanagement.gson.Notice;
 import com.example.studentclubsmanagement.util.HttpUtil;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 /**
  * Created by 李子韬 on 2018/4/15.
@@ -32,6 +38,8 @@ public class NoticeDialogFragment extends DialogFragment {
     private int mNoticeType;
     private String mBody;
     private AlertDialog mDialog;
+    private int mPosition;
+    private NoticeListRecyclerViewAdapter mAdapter;
 
     public void setNoticeType(int noticeType) {
         mNoticeType = noticeType;
@@ -39,6 +47,14 @@ public class NoticeDialogFragment extends DialogFragment {
 
     public void setBody(String body) {
         mBody = body;
+    }
+
+    public void setAdapter(NoticeListRecyclerViewAdapter adapter) {
+        mAdapter = adapter;
+    }
+
+    public void setPosition(int position) {
+        mPosition = position;
     }
 
     @NonNull
@@ -83,9 +99,29 @@ public class NoticeDialogFragment extends DialogFragment {
         if (noticeType == 1) {
 
         } else if(noticeType == 2) {
-
+            ClubMessagePush request = GsonSingleton.getInstance().fromJson(body, ClubMessagePush.class);
+            String path =  request.getUserHeaderImagePath();
+            if (!"".equals(path) && path != null) {
+                Glide.with(getActivity()).load(HttpUtil.getUrlPrefix(getActivity()) + path).into(userHeader);
+            }
+            userName.setText(request.getUserName());
+            title.setText(request.getTitle());
+            content.setText(request.getContent());
+            readBtn.setVisibility(View.VISIBLE);
+            rejectionBtn.setVisibility(View.GONE);
+            agreementBtn.setVisibility(View.GONE);
         } else if(noticeType == 3) {
-
+            ClubConferenceOrganizing request = GsonSingleton.getInstance().fromJson(body, ClubConferenceOrganizing.class);
+            String path =  request.getUserHeaderImagePath();
+            if (!"".equals(path) && path != null) {
+                Glide.with(getActivity()).load(HttpUtil.getUrlPrefix(getActivity()) + path).into(userHeader);
+            }
+            userName.setText(request.getUserName());
+            title.setText(request.getTitle());
+            content.setText(request.getContent());
+            readBtn.setVisibility(View.VISIBLE);
+            rejectionBtn.setVisibility(View.GONE);
+            agreementBtn.setVisibility(View.GONE);
         } else if(noticeType == 4) {
             ClubAccessRequest request = GsonSingleton.getInstance().fromJson(body, ClubAccessRequest.class);
             String path =  request.getUserImageHeader();
@@ -111,12 +147,18 @@ public class NoticeDialogFragment extends DialogFragment {
                     mDialog.dismiss();
                     break;
                 case R.id.notice_dialog_btn2:
+                    mAdapter.getNoticeList().remove(mPosition);
+                    mAdapter.notifyDataSetChanged();
                     mDialog.dismiss();
                     break;
                 case R.id.notice_dialog_btn3:
+                    mAdapter.getNoticeList().remove(mPosition);
+                    mAdapter.notifyDataSetChanged();
                     mDialog.dismiss();
                     break;
                 case R.id.notice_dialog_btn4:
+                    mAdapter.getNoticeList().remove(mPosition);
+                    mAdapter.notifyDataSetChanged();
                     mDialog.dismiss();
                     break;
             }

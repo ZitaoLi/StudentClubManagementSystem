@@ -12,5 +12,7 @@
         <attr name="fontsize_large" format="dimension"></attr>
 
         <attr name="item_height_1" format="dimension"></attr>
+        <attr name="item_height_2" format="dimension"></attr>
+        <attr name="item_height_3" format="dimension"></attr>
     </declare-styleable>
 </resources>
